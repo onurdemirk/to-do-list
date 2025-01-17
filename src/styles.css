@@ -1,3 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 * {
-    background-color: black;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, sans-serif; 
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 100vh;
+  grid-template-areas: "sidebar tasklist";
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: #e7edfb;
+}
+
+.side-menu { 
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 30px 25px 0 40px;
+    gap: 20px;
+}
+
+.project-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+}
+
+.button {
+    transition: transform 0.3s ease, filter 0.3s ease;
+    cursor: pointer;
+}
+
+.button:hover {
+    transform: scale(1.1); 
+    filter: brightness(0.8); 
+}
+
+.tasklist {
+  grid-area: tasklist;
+}
+
+.new-project {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  padding-bottom: 7px;
+}
+
+.project-list {
+  padding: 40px 40px 0 40px;
+}
+
+.new-project-title:focus {
+  outline: 2px dashed #007bff;
+  background-color: #f0f8ff;
 }
