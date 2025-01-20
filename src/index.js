@@ -1,4 +1,4 @@
 import "./styles.css";
-import { setupDOM } from "./dom-handler";
+import { initializeProjects } from "./dom.js";
 
-setupDOM();
+initializeProjects();
