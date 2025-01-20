@@ -16,6 +16,9 @@
 .sidebar {
   grid-area: sidebar;
   background-color: #e7edfb;
+  width: 300px;
+  max-width: 100%;
+
 }
 
 .side-menu { 
@@ -28,10 +31,77 @@
 
 .project-header {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     padding-top: 15px;
+}
+
+.project-titles {
+  display: flex;
+  flex-direction: row;
+  font-size: 1.5rem;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+
+.my-projects {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  gap: 15px;
+  font-size: 1.5rem;
+  overflow-y: auto; 
+  overflow-x: hidden;
+  height: 200px;
+  padding: 10px; 
+  scrollbar-width: thin;
+  scrollbar-color: #c5cace #f1f1f1;
+}
+
+.my-projects-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgb(0, 0, 0);
+}
+
+.project-name {
+  width: 130px;
+  word-wrap: break-word;
+  overflow-wrap: break-word; 
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.my-projects-block:hover {
+  color: rgb(107, 105, 105);
+}
+
+.project-main {
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+}
+
+.project-main:hover {
+  color: rgb(107, 105, 105);
+}
+
+.project-number {
+  background-color: #26A1F4;
+  color: white;
+  width: 25px;
+  max-width: 100%;
+  height: 26px;
+  text-align: center;
+  font-size: 1.4rem;
+  border: 1px solid;
+  border-radius:  50%;
+  flex-shrink: 0;
+}
+
+.add-project-button {
+  display: flex;
+  align-content: end;
+  margin-top: 10%;
 }
 
 .button {
@@ -55,11 +125,286 @@
   padding-bottom: 7px;
 }
 
-.project-list {
-  padding: 40px 40px 0 40px;
+
+.modal-header {
+  display: flex; 
+  padding: 0;
+  margin: 0;
+  justify-content: space-between; 
+  background-color: #26A1F4;
+  padding: 7px;
+  color: white;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
 }
 
-.new-project-title:focus {
-  outline: 2px dashed #007bff;
-  background-color: #f0f8ff;
+.modal-form {
+  display: flex; 
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  padding: 20px 20px 0 20px;
+}
+
+textarea {
+  font-size: 18px;
+}
+
+textarea::placeholder {
+  font-size: 18px;
+}
+
+.modal-due {
+  display: flex;
+  flex-direction: column;
+  padding: 70px 20px 0 20px;
+}
+
+.due-date {
+  display: flex;
+  gap: 10px;
+  font-size: 18px;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.due-date input[type="date"] {
+  border: 2px solid #26A1F4;
+  border-radius: 4px; 
+  padding: 3px;
+  text-transform: uppercase;
+}
+.modal-bottom {
+  display: flex;
+  gap: 25px;
+  font-size: 18px;
+}
+
+#p-low {
+  border: 1px solid green;
+  border-radius: 5px;
+  color: green;
+  padding: 5px;
+  font-size: 10px;
+  font-weight: bold;
+  align-content: center;
+}
+
+#p-low:hover {
+  background-color: green;
+  cursor: pointer;
+  color: white;
+}
+
+#p-medium {
+  border: 1px solid orange;
+  border-radius: 5px;
+  color: orange;
+  padding: 5px;
+  font-size: 10px;
+  font-weight: bold;
+  align-content: center;
+}
+
+#p-medium:hover {
+  background-color: orange;
+  cursor: pointer;
+  color: white;
+}
+
+#p-high {
+  border: 1px solid red;
+  border-radius: 5px;
+  color: red;
+  padding: 5px;
+  font-size: 10px;
+  font-weight: bold;
+  align-content: center;
+}
+
+#p-high:hover {
+  background-color: red;
+  cursor: pointer;
+  color: white;
+}
+
+#p-low.selected {
+  background-color: green;
+  color: white;
+}
+
+#p-medium.selected {
+  background-color: orange;
+  color: white;
+}
+
+#p-high.selected {
+  background-color: red;
+  color: white;
+}
+
+#add-task {
+  border: 1px solid #26A1F4;
+  border-radius: 5px;
+  color: #26A1F4;
+  padding: 5px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+#add-task:hover {
+  background-color: #26A1F4;
+  cursor: pointer;
+  color: white;
+}
+
+.modal {
+  visibility: hidden;
+  position: fixed;
+  width: 500px;
+  height: 360px;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  opacity: 0;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid rgb(189, 185, 185);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: ransform 0.3s ease, opacity 0.3s ease;
+  z-index: 10;
+}
+
+.modal.active {
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px); 
+  z-index: 5; 
+  transition: opacity 0.3s ease; 
+}
+
+.modal-overlay.active {
+  display: block;
+  opacity: 1; 
+}
+
+
+.tasklist {
+  grid-area: tasklist;
+  display: flex;
+  flex-direction: column;
+  padding: 25px 10px 5px 25px;
+  max-width: 100%;
+  gap: 20px;
+}
+
+.task-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.task-new {
+  display: none;
+  border: 1px solid ;
+  width: 100px;
+  padding: 4px;
+  border-radius: 7px;
+  background-color: #26A1F4;
+  color: white;
+  transition: all 0.3s ease; 
+  cursor: pointer;
+  text-align: center;
+}
+
+.task-new:hover {
+  background-color: #1f8adb; 
+  color: #fff; 
+  transform: scale(1.05); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.task-delete {
+  display: none;
+  border: 1px solid ;
+  width: 100px;
+  padding: 4px;
+  border-radius: 7px;
+  background-color: red;
+  color: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.task-delete:hover {
+  background-color: #d10000; 
+  color: #fff; 
+  transform: scale(1.05); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.task-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-menu {
+  display: flex;
+  flex-direction: row;
+  width: 95%;
+  justify-content: space-between;
+  margin-top: 20px;
+  align-items: center;
+  height: 35px;
+  padding: 10px;
+  background-color: #f7f3f3;
+  border-left: 5px solid #d10000;
+  transition: box-shadow 0.3s ease;
+}
+
+.task-menu:hover {
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.task-first-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.task-second-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.task-date {
+  font-size: 0.7rem;
+}
+
+.task-details {
+  border: 1px solid #000000;
+  font-size: 0.8rem;
+  padding: 5px;
+  border-radius: 7px;
+  color: #000000;
+  cursor: pointer;
+}
+
+.task-details:hover {
+  background-color: black;
+  color: white;
 }
