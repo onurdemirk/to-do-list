@@ -6,29 +6,96 @@
     <title>Document</title>
   </head>
   <body>
+    <div class="modal-overlay"></div>
+
+    <div id="taskModal" class="modal">
+      <div class="modal-header">
+        <h2># Create a new Task</h2>
+        <p class="x" style="font-size: 1.5rem; cursor: pointer">X</p>
+      </div>
+      <div class="modal-form">
+        <textarea
+          id="title"
+          style="border: none; outline: none; resize: none"
+          maxlength="30"
+          placeholder="Title:"
+          name="title"
+          required
+        ></textarea>
+        <textarea
+          id="desc"
+          style="border: none; outline: none; resize: none"
+          maxlength="100"
+          rows="4"
+          placeholder="Details:"
+          name="description"
+          required
+        ></textarea>
+      </div>
+      <div class="modal-due">
+        <div class="due-date">
+          <p>Due Date:</p>
+          <input type="date" id="form-date" name="form-date" />
+        </div>
+        <div class="modal-bottom">
+          <div>
+            <p>Priority:</p>
+          </div>
+          <div style="display: flex; gap: 10px">
+            <p id="p-low" class="priority-button">LOW</p>
+            <p id="p-medium" class="priority-button">MEDIUM</p>
+            <p id="p-high" class="priority-button">HIGH</p>
+          </div>
+          <div style="padding-left: 140px">
+            <p id="add-task">ADD TASK</p>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="main">
       <div class="sidebar">
         <div class="side-menu">
+          <div>
+            <h1 style="font-size: 1.5rem">ClearTasks</h1>
+          </div>
+          <div class="project-header">
+            <div class="project-titles">
+              <p class="project-main">Home</p>
+              <p class="project-number">0</p>
+            </div>
+            <div class="project-titles">
+              <p class="project-main">Today</p>
+              <p class="project-number">0</p>
+            </div>
+            <div class="project-titles">
+              <p class="project-main">Week</p>
+              <p class="project-number">0</p>
+            </div>
+            <div class="project-titles">
+              <p>Projects</p>
+            </div>
             <div>
-                <h1 style="font-size: 1.5rem;">ClearTasks</h1>
+              <div class="my-projects"></div>
             </div>
-            <div class="project-header">
-              <div style="display: flex; gap: 3px;">
-                <img src="./img/projects.png" alt="add-button" width="18px">
-                <p style="font-size: 1rem;">My Projects</p>
-              </div>  
-              <div>
-                <img id="add-button" class="button" src="./img/add.png" alt="add-button" width="22px">
-              </div>
-            </div>
-        </div>
-        <div class="project-list">
-            <div id="project-container">
-
-            </div>
+          </div>
+          <div class="add-project-button">
+            <img
+              id="add-project-button"
+              class="button"
+              src="./img/add.png"
+              alt="add-button"
+              width="50px"
+            />
+          </div>
         </div>
       </div>
-      <div class="tasklist"></div>
+      <div class="tasklist">
+        <div class="task-buttons">
+          <p class="task-new">New Task</p>
+          <p class="task-delete">Delete Project</p>
+        </div>
+        <div class="task-container"></div>
+      </div>
     </div>
   </body>
 </html>
