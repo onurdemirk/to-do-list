@@ -10,24 +10,27 @@
 
     <div id="taskModal" class="modal">
       <div class="modal-header">
-        <h2># Create a new Task</h2>
+        <h2 class="modal-header-text"># Create a new Task</h2>
         <p class="x" style="font-size: 1.5rem; cursor: pointer">X</p>
       </div>
       <div class="modal-form">
+        <h3 class="modal-form-project-name" style="margin-bottom: 20px;"></h3>
+        <p>Title:</p>
         <textarea
           id="title"
           style="border: none; outline: none; resize: none"
           maxlength="30"
-          placeholder="Title:"
+          placeholder="..."
           name="title"
           required
         ></textarea>
+        <p>Details:</p>
         <textarea
           id="desc"
           style="border: none; outline: none; resize: none"
           maxlength="100"
           rows="4"
-          placeholder="Details:"
+          placeholder="..."
           name="description"
           required
         ></textarea>
@@ -52,6 +55,18 @@
         </div>
       </div>
     </div>
+    <div id="taskDetailsForm" class="taskDetailsFormModal">
+      <div>
+        <p class="tdf-close" style="font-size: 1.5rem; cursor: pointer; text-align: end;">X</p>
+      </div>
+      <div class="taskDetailsForm-details">
+        <h2 class="tdf-task-name">Task Name</h2>
+        <p class="tdf-project-name">Project Name</p>
+        <p class="tdf-priority">Priority: Low</p>
+        <p class="tdf-due-date">Due Date: December 12th, 2024</p>
+        <p class="tdf-detail">Details: details</p>
+      </div>
+    </div>
     <div class="main">
       <div class="sidebar">
         <div class="side-menu">
@@ -60,16 +75,16 @@
           </div>
           <div class="project-header">
             <div class="project-titles">
-              <p class="project-main">Home</p>
-              <p class="project-number">0</p>
+              <p id="home-button" class="project-main">Home</p>
+              <p id="home-number" class="project-number">0</p>
             </div>
             <div class="project-titles">
-              <p class="project-main">Today</p>
-              <p class="project-number">0</p>
+              <p id="today-button" class="project-main">Today</p>
+              <p id="today-number" class="project-number">0</p>
             </div>
             <div class="project-titles">
-              <p class="project-main">Week</p>
-              <p class="project-number">0</p>
+              <p id="week-button" class="project-main">Week</p>
+              <p id="week-number" class="project-number">0</p>
             </div>
             <div class="project-titles">
               <p>Projects</p>
@@ -92,7 +107,7 @@
       <div class="tasklist">
         <div class="task-buttons">
           <p class="task-new">New Task</p>
-          <p class="task-delete">Delete Project</p>
+          <p class="project-delete">Delete Project</p>
         </div>
         <div class="task-container"></div>
       </div>
