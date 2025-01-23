@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
 * {
   margin: 0;
   padding: 0;
-  font-family: Roboto, sans-serif; 
+  font-family: Roboto, sans-serif;
 }
 
 .main {
@@ -18,21 +18,20 @@
   background-color: #e7edfb;
   width: 300px;
   max-width: 100%;
-
 }
 
-.side-menu { 
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    padding: 30px 25px 0 40px;
-    gap: 20px;
+.side-menu {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 30px 25px 0 40px;
+  gap: 20px;
 }
 
 .project-header {
-    display: flex;
-    flex-direction: column;
-    padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  padding-top: 15px;
 }
 
 .project-titles {
@@ -49,10 +48,10 @@
   align-content: center;
   gap: 15px;
   font-size: 1.5rem;
-  overflow-y: auto; 
+  overflow-y: auto;
   overflow-x: hidden;
   height: 200px;
-  padding: 10px; 
+  padding: 10px;
   scrollbar-width: thin;
   scrollbar-color: #c5cace #f1f1f1;
 }
@@ -67,7 +66,7 @@
 .project-name {
   width: 130px;
   word-wrap: break-word;
-  overflow-wrap: break-word; 
+  overflow-wrap: break-word;
   font-size: 1.1rem;
   cursor: pointer;
 }
@@ -86,7 +85,7 @@
 }
 
 .project-number {
-  background-color: #26A1F4;
+  background-color: #26a1f4;
   color: white;
   width: 25px;
   max-width: 100%;
@@ -94,7 +93,7 @@
   text-align: center;
   font-size: 1.4rem;
   border: 1px solid;
-  border-radius:  50%;
+  border-radius: 50%;
   flex-shrink: 0;
 }
 
@@ -105,13 +104,13 @@
 }
 
 .button {
-    transition: transform 0.3s ease, filter 0.3s ease;
-    cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  cursor: pointer;
 }
 
 .button:hover {
-    transform: scale(1.1); 
-    filter: brightness(0.8); 
+  transform: scale(1.1);
+  filter: brightness(0.8);
 }
 
 .tasklist {
@@ -125,13 +124,12 @@
   padding-bottom: 7px;
 }
 
-
 .modal-header {
-  display: flex; 
+  display: flex;
   padding: 0;
   margin: 0;
-  justify-content: space-between; 
-  background-color: #26A1F4;
+  justify-content: space-between;
+  background-color: #26a1f4;
   padding: 7px;
   color: white;
   border-top-left-radius: 7px;
@@ -139,7 +137,7 @@
 }
 
 .modal-form {
-  display: flex; 
+  display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 0;
@@ -170,8 +168,8 @@ textarea::placeholder {
 }
 
 .due-date input[type="date"] {
-  border: 2px solid #26A1F4;
-  border-radius: 4px; 
+  border: 2px solid #26a1f4;
+  border-radius: 4px;
   padding: 3px;
   text-transform: uppercase;
 }
@@ -245,16 +243,16 @@ textarea::placeholder {
 }
 
 #add-task {
-  border: 1px solid #26A1F4;
-  border-radius: 5px;
-  color: #26A1F4;
-  padding: 5px;
+  border: 1px solid #26a1f4;
+  border-radius: 6px;
+  color: #26a1f4;
+  padding: 4px;
   font-size: 12px;
   font-weight: bold;
 }
 
 #add-task:hover {
-  background-color: #26A1F4;
+  background-color: #26a1f4;
   cursor: pointer;
   color: white;
 }
@@ -263,7 +261,7 @@ textarea::placeholder {
   visibility: hidden;
   position: fixed;
   width: 500px;
-  height: 360px;
+  height: 480px;
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.5);
@@ -290,16 +288,15 @@ textarea::placeholder {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px); 
-  z-index: 5; 
-  transition: opacity 0.3s ease; 
+  backdrop-filter: blur(5px);
+  z-index: 5;
+  transition: opacity 0.3s ease;
 }
 
 .modal-overlay.active {
   display: block;
-  opacity: 1; 
+  opacity: 1;
 }
-
 
 .tasklist {
   grid-area: tasklist;
@@ -317,27 +314,27 @@ textarea::placeholder {
 
 .task-new {
   display: none;
-  border: 1px solid ;
+  border: 1px solid;
   width: 100px;
   padding: 4px;
   border-radius: 7px;
-  background-color: #26A1F4;
+  background-color: #26a1f4;
   color: white;
-  transition: all 0.3s ease; 
+  transition: all 0.3s ease;
   cursor: pointer;
   text-align: center;
 }
 
 .task-new:hover {
-  background-color: #1f8adb; 
-  color: #fff; 
-  transform: scale(1.05); 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  background-color: #1f8adb;
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.task-delete {
+.project-delete {
   display: none;
-  border: 1px solid ;
+  border: 1px solid;
   width: 100px;
   padding: 4px;
   border-radius: 7px;
@@ -347,11 +344,11 @@ textarea::placeholder {
   cursor: pointer;
 }
 
-.task-delete:hover {
-  background-color: #d10000; 
-  color: #fff; 
-  transform: scale(1.05); 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+.project-delete:hover {
+  background-color: #d10000;
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .task-container {
@@ -375,6 +372,16 @@ textarea::placeholder {
 
 .task-menu:hover {
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.task-menu.checked {
+  opacity: 0.6; 
+  transition: opacity 0.3s ease; 
+}
+
+.task-title.checked {
+  color: rgb(145, 143, 143);
+  text-decoration: line-through;
 }
 
 .task-first-block {
@@ -406,5 +413,61 @@ textarea::placeholder {
 
 .task-details:hover {
   background-color: black;
+  color: white;
+}
+
+.taskDetailsFormModal {
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  width: 500px;
+  height: 230px;
+  top: 45%;
+  left: 50%;
+  opacity: 0;
+  background: rgb(243, 241, 241);
+  border-radius: 10px;
+  border: 1px solid rgb(189, 185, 185);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 20px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: translate(-50%, -50%) scale(0.5);
+}
+
+.taskDetailsFormModal.active {
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.taskDetailsForm-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  appearance: none;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+input[type="checkbox"]:checked::before {
+  content: "✔";
+  display: block;
+  text-align: center;
+  font-size: 14px;
   color: white;
 }
