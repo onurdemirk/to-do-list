@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>ClearTasks</title>
+    <link rel="icon" type="image/x-icon" href="./img/hashtag.png">
   </head>
   <body>
     <div class="modal-overlay"></div>
@@ -14,7 +15,7 @@
         <p class="x" style="font-size: 1.5rem; cursor: pointer">X</p>
       </div>
       <div class="modal-form">
-        <h3 class="modal-form-project-name" style="margin-bottom: 20px;"></h3>
+        <h3 class="modal-form-project-name" style="margin-bottom: 20px"></h3>
         <p>Title:</p>
         <textarea
           id="title"
@@ -55,9 +56,37 @@
         </div>
       </div>
     </div>
+    <div class="add-project-window">
+      <div class="first-block">
+        <textarea
+          id="add-project-name"
+          style="border: none; outline: none; resize: none"
+          maxlength="30"
+          placeholder="Add a new project name"
+          name="add-project-name"
+          required
+        ></textarea>
+        <p
+          id="error-message"
+          style="color: #d10000; font-size: 0.8rem; display: none"
+        >
+          Project field is required!
+        </p>
+      </div>
+      <br />
+      <div class="add-projects-form-buttons">
+        <p class="add-project-form-new">Add</p>
+        <p class="add-project-form-cancel">Cancel</p>
+      </div>
+    </div>
     <div id="taskDetailsForm" class="taskDetailsFormModal">
       <div>
-        <p class="tdf-close" style="font-size: 1.5rem; cursor: pointer; text-align: end;">X</p>
+        <p
+          class="tdf-close"
+          style="font-size: 1.5rem; cursor: pointer; text-align: end"
+        >
+          X
+        </p>
       </div>
       <div class="taskDetailsForm-details">
         <h2 class="tdf-task-name">Task Name</h2>
@@ -71,7 +100,7 @@
       <div class="sidebar">
         <div class="side-menu">
           <div>
-            <h1 style="font-size: 1.5rem">ClearTasks</h1>
+            <h1 style="font-size: 2rem"># ClearTasks</h1>
           </div>
           <div class="project-header">
             <div class="project-titles">
