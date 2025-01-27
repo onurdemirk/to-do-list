@@ -1,7 +1,6 @@
 import {
   displayProjects,
   addProject,
-  allProjects,
   getProjectById,
   getProjectNameById,
 } from "./project.js";
@@ -11,8 +10,12 @@ import {
   displayTasksInWeek,
   displayTasksInDay,
 } from "./task.js";
-import { formatTaskDate, tasksInWeek, tasksInDay  } from "./date.js";
+import { formatTaskDate, tasksInWeek, tasksInDay } from "./date.js";
 import { home, today, week } from "./dom-side-bar.js";
+import {
+  saveProjectsToLocalStorage,
+  getProjectsFromLocalStorage,
+} from "./local-storage.js";
 
 home();
 
@@ -33,6 +36,8 @@ const closeTDFButton = document.querySelector(".tdf-close");
 const homeButton = document.getElementById("home-button");
 const weekButton = document.getElementById("week-button");
 const todayButton = document.getElementById("today-button");
+const projectWindow = document.querySelector(".add-project-window");
+const projectName = document.getElementById("add-project-name");
 
 let selectedProjectId = null;
 
@@ -46,7 +51,10 @@ function resetForm() {
 
 function closeModal() {
   modal.classList.remove("active");
+  taskDetailsForm.classList.remove("active");
   overlay.style.display = "none";
+  projectWindow.classList.remove("active");
+  projectName.value = "";
   resetForm();
 }
 
@@ -55,24 +63,41 @@ export function initializeProjects() {
 }
 
 addProjectButton.addEventListener("click", () => {
-  const projectName = prompt("Please add new project name:");
+  projectWindow.classList.add("active");
+  overlay.style.display = "block";
+  document.getElementById("error-message").style.display = "none";
 
-  if (projectName) {
-    addProject(projectName);
-    displayProjects();
+  document
+    .querySelector(".add-project-form-new")
+    .addEventListener("click", () => {
+      if (projectName.value) {
+        addProject(projectName.value.trim());
+        displayProjects();
 
-    const newProject = allProjects[allProjects.length - 1];
-    selectedProjectId = newProject.id;
+        const projects = getProjectsFromLocalStorage();
+        const newProject = projects[projects.length - 1];
+        selectedProjectId = newProject.id;
 
-    taskNewButton.style.display = "block";
-    projectDeleteButton.style.display = "block";
+        taskNewButton.style.display = "block";
+        projectDeleteButton.style.display = "block";
 
-    projectDeleteButton.setAttribute("data-project-id", selectedProjectId);
-    taskNewButton.setAttribute("data-project-id", selectedProjectId);
+        projectDeleteButton.setAttribute("data-project-id", selectedProjectId);
+        taskNewButton.setAttribute("data-project-id", selectedProjectId);
 
-    page = "projects";
-    pageDirecton(selectedProjectId);
-  }
+        closeModal();
+
+        page = "projects";
+        pageDirection(selectedProjectId);
+      } else {
+        document.getElementById("error-message").style.display = "block";
+      }
+    });
+
+  document
+    .querySelector(".add-project-form-cancel")
+    .addEventListener("click", () => {
+      closeModal();
+    });
 });
 
 myProjectsContainer.addEventListener("click", (e) => {
@@ -112,26 +137,27 @@ myProjectsContainer.addEventListener("click", (e) => {
     taskNewButton.setAttribute("data-project-id", selectedProjectId);
 
     page = "projects";
-    pageDirecton(selectedProjectId);
+    pageDirection(selectedProjectId);
   }
 });
 
 taskNewButton.addEventListener("click", () => {
-console.log(selectedProjectId);
+  console.log("taskNewButton clicked! selectedProjectId:", selectedProjectId);
 
   if (selectedProjectId) {
     modal.classList.add("active");
     overlay.style.display = "block";
 
     modal.setAttribute("data-project-id", selectedProjectId);
+    modal.setAttribute("data-mode", "add");
+
     const projectName = getProjectNameById(selectedProjectId);
     document.querySelector(
       ".modal-form-project-name"
     ).textContent = `Project Name: ${projectName}`;
 
     page = "projects";
-    pageDirecton(selectedProjectId);
-
+    pageDirection(selectedProjectId);
   } else {
     alert("Please select a project first!");
   }
@@ -161,19 +187,20 @@ addTaskButton.addEventListener("click", () => {
   const priority =
     document.querySelector(".priority-button.selected")?.id || "p-low";
 
+  if (!title || !desc || !dueDate) {
+    alert("Please fill all the blanks!");
+    return;
+  }
+
   document.getElementById("add-task").textContent = "ADD TASK";
   document.querySelector(".modal-header-text").textContent =
     "# Create a new Task";
 
   const mode = modal.getAttribute("data-mode");
   const projectId = modal.getAttribute("data-project-id");
+  const projects = getProjectsFromLocalStorage();
 
-  if (!title || !desc || !dueDate) {
-    alert("Please fill all the blanks!");
-    return;
-  }
-
-  const selectedProject = getProjectById(projectId);
+  const selectedProject = projects.find((project) => project.id === projectId);
   if (!selectedProject) {
     alert("Project not found!");
     return;
@@ -191,8 +218,6 @@ addTaskButton.addEventListener("click", () => {
       return;
     }
 
-    
-
     selectedTask.title = document.querySelector("#title").value;
 
     selectedTask.detail = document.querySelector("#desc").value;
@@ -204,10 +229,18 @@ addTaskButton.addEventListener("click", () => {
     selectedTask.priority = selectedPriority
       ? selectedPriority.textContent.toLowerCase()
       : "low";
-      
-      closeModal();
-      pageDirecton(projectId);
- 
+
+    saveProjectsToLocalStorage(projects);
+
+    displayProjects();
+
+    page = "projects";
+    pageDirection(projectId);
+
+    closeModal();
+
+    modal.removeAttribute("data-mode");
+
     return;
   }
 
@@ -223,12 +256,12 @@ addTaskButton.addEventListener("click", () => {
 
   selectedProject.tasks.push(newTask);
 
-  displayProjects();
-  
-  page = "projects";
-  pageDirecton(projectId);
+  saveProjectsToLocalStorage(projects);
 
-  
+  displayProjects();
+
+  page = "projects";
+  pageDirection(projectId);
   closeModal();
 });
 
@@ -262,27 +295,26 @@ tasksContainer.addEventListener("click", (e) => {
     overlay.style.display = "block";
     taskDetailsForm.classList.add("active");
   } else if (e.target.id === "task-edit") {
-
     const projectId = e.target.getAttribute("data-project-id");
     const taskId = e.target.getAttribute("task-id");
 
-    const selectedProject = getProjectById(projectId);
-    const selectedTask = selectedProject.tasks.find(
-      (task) => task.taskId === taskId
-    );
+    const projects = getProjectsFromLocalStorage();
+    const project = projects.find((proj) => proj.id === projectId);
+    const task = project.tasks.find((t) => t.taskId === taskId);
+
     const selectedProjectName = getProjectNameById(projectId);
 
-    document.querySelector("#title").value = selectedTask.title;
-    document.querySelector("#desc").value = selectedTask.detail;
-    document.querySelector("#form-date").value = selectedTask.dueDate;
+    document.querySelector("#title").value = task.title;
+    document.querySelector("#desc").value = task.detail;
+    document.querySelector("#form-date").value = task.dueDate;
     document.querySelector(
       ".modal-form-project-name"
     ).textContent = `Project: ${selectedProjectName}`;
     document.querySelector(".modal-header-text").textContent = "# Edit Task";
 
-    if (selectedTask.priority === "high") {
+    if (task.priority === "high") {
       document.getElementById("p-high").classList.add("selected");
-    } else if (selectedTask.priority === "medium") {
+    } else if (task.priority === "medium") {
       document.getElementById("p-medium").classList.add("selected");
     } else {
       document.getElementById("p-low").classList.add("selected");
@@ -298,18 +330,17 @@ tasksContainer.addEventListener("click", (e) => {
     modal.setAttribute("data-mode", "edit");
   } else if (e.target.id === "task-delete") {
     const projectId = e.target.getAttribute("data-project-id");
-
     const taskId = e.target.getAttribute("task-id");
-    const selectedProject = getProjectById(projectId);
 
-    const taskIndex = selectedProject.tasks.findIndex(
-      (task) => task.taskId === taskId
-    );
+    const projects = getProjectsFromLocalStorage();
+    const project = projects.find((proj) => proj.id === projectId);
 
-    selectedProject.tasks.splice(taskIndex, 1);
+    project.tasks = project.tasks.filter((task) => task.taskId !== taskId);
+
+    saveProjectsToLocalStorage(projects);
 
     displayProjects();
-    pageDirecton(projectId);
+    pageDirection(projectId);
   }
 });
 
@@ -321,12 +352,14 @@ closeTDFButton.addEventListener("click", () => {
 document.querySelector(".project-delete").addEventListener("click", (e) => {
   const projectId = e.target.getAttribute("data-project-id");
 
-  const projectIndex = allProjects.findIndex(
-    (project) => project.id === projectId
-  );
-  allProjects.splice(projectIndex, 1);
+  const projects = getProjectsFromLocalStorage();
+
+  const updatedProjects = projects.filter((proj) => proj.id !== projectId);
+  saveProjectsToLocalStorage(updatedProjects);
 
   displayProjects();
+
+  selectedProjectId = null;
   home();
 });
 
@@ -335,28 +368,29 @@ document.querySelector(".task-container").addEventListener("click", (e) => {
     const projectId = e.target.getAttribute("data-project-id");
     const taskId = e.target.getAttribute("task-id");
 
-    const selectedProject = getProjectById(projectId);
+    const projects = getProjectsFromLocalStorage();
+    const selectedProject = projects.find((proj) => proj.id === projectId);
 
     const taskMenu = e.target.closest(".task-menu");
     const taskTitle = taskMenu.querySelector(".task-title");
 
-    const selectedTask = selectedProject.tasks.find((task) => task.taskId === taskId);
+    const selectedTask = selectedProject.tasks.find(
+      (task) => task.taskId === taskId
+    );
 
     if (e.target.checked) {
-
       e.target.classList.add("checked");
       taskTitle.classList.add("checked");
       taskMenu.classList.add("checked");
       selectedTask.isDone = true;
-
     } else {
-
       e.target.classList.remove("checked");
       taskTitle.classList.remove("checked");
       taskMenu.classList.remove("checked");
       selectedTask.isDone = false;
     }
 
+    saveProjectsToLocalStorage(projects);
     displayProjects();
   }
 });
@@ -380,7 +414,9 @@ todayButton.addEventListener("click", () => {
 });
 
 export function updateProjectNumbers() {
-  allProjects.forEach((project) => {
+  const projects = getProjectsFromLocalStorage();
+
+  projects.forEach((project) => {
     const taskNumberElement = document.querySelector(
       `.project-number[data-project-id="${project.id}"]`
     );
@@ -392,12 +428,12 @@ export function updateProjectNumbers() {
   });
 
   const allTasks = document.getElementById("home-number");
-  allTasks.innerHTML = allProjects.reduce((count, project) => {
+  allTasks.innerHTML = projects.reduce((count, project) => {
     return count + project.tasks.filter((task) => !task.isDone).length;
   }, 0);
 
   const weekTasks = document.getElementById("week-number");
-  weekTasks.innerHTML = allProjects.reduce((count, project) => {
+  weekTasks.innerHTML = projects.reduce((count, project) => {
     const incompleteTasksInWeek = tasksInWeek(project.tasks).filter(
       (task) => !task.isDone
     );
@@ -405,7 +441,7 @@ export function updateProjectNumbers() {
   }, 0);
 
   const todayTasks = document.getElementById("today-number");
-  todayTasks.innerHTML = allProjects.reduce((count, project) => {
+  todayTasks.innerHTML = projects.reduce((count, project) => {
     const incompleteTasksInDay = tasksInDay(project.tasks).filter(
       (task) => !task.isDone
     );
@@ -413,21 +449,23 @@ export function updateProjectNumbers() {
   }, 0);
 }
 
-function pageDirecton(project) {
+function pageDirection(project) {
   if (page === "home") {
     return home();
   } else if (page === "today") {
     return today();
   } else if (page === "week") {
-   return week();
+    return week();
   } else if (page === "projects") {
-
     document.querySelectorAll(".my-projects-block").forEach((projectBlock) => {
       const projectNameElement = projectBlock.querySelector(".project-name");
 
       projectBlock.style.color = "black";
       if (projectNameElement.textContent.startsWith("#")) {
-        projectNameElement.textContent = projectNameElement.textContent.replace(/^#\s*/, "");
+        projectNameElement.textContent = projectNameElement.textContent.replace(
+          /^#\s*/,
+          ""
+        );
       }
     });
 
@@ -436,7 +474,6 @@ function pageDirecton(project) {
     );
 
     if (clickedProject) {
-
       clickedProject.style.color = "rgb(111, 104, 104)";
       const projectName = clickedProject.querySelector(".project-name");
 
@@ -449,6 +486,5 @@ function pageDirecton(project) {
 
     updateProjectNumbers();
     displayTasks(project);
-    
   }
-  }
+}
