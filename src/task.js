@@ -2,6 +2,7 @@ import { getProjectById } from "./project.js";
 import { formatTaskDate, tasksInWeek, tasksInDay } from "./date.js";
 import imgEdit from "./img/pen.png";
 import imgDelete from "./img/delete.png";
+import gifNaruto from "./img/naruto.gif";
 import { getProjectsFromLocalStorage } from "./local-storage.js";
 
 export function displayTasks(projectId) {
@@ -78,7 +79,7 @@ export function displayTasks(projectId) {
       tasksContainer.appendChild(taskMenu);
     });
   } else {
-    tasksContainer.innerHTML = "<p>There is no task for this project.</p>";
+    tasksContainer.innerHTML = `<p>There is no task for this project.</p><br><img src='${gifNaruto}' alt='naruto' width='150' height='150'>`;
   }
 }
 
