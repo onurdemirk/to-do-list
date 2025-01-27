@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClearTasks</title>
+    <link rel="icon" type="image/x-icon" href="7a1deac42eb7a41cceb4.png">
+  <script defer src="main.js"></script></head>
+  <body>
+    <div class="modal-overlay"></div>
+
+    <div id="taskModal" class="modal">
+      <div class="modal-header">
+        <h2 class="modal-header-text"># Create a new Task</h2>
+        <p class="x" style="font-size: 1.5rem; cursor: pointer">X</p>
+      </div>
+      <div class="modal-form">
+        <h3 class="modal-form-project-name" style="margin-bottom: 20px"></h3>
+        <p>Title:</p>
+        <textarea
+          id="title"
+          style="border: none; outline: none; resize: none"
+          maxlength="30"
+          placeholder="..."
+          name="title"
+          required
+        ></textarea>
+        <p>Details:</p>
+        <textarea
+          id="desc"
+          style="border: none; outline: none; resize: none"
+          maxlength="100"
+          rows="4"
+          placeholder="..."
+          name="description"
+          required
+        ></textarea>
+      </div>
+      <div class="modal-due">
+        <div class="due-date">
+          <p>Due Date:</p>
+          <input type="date" id="form-date" name="form-date" />
+        </div>
+        <div class="modal-bottom">
+          <div>
+            <p>Priority:</p>
+          </div>
+          <div style="display: flex; gap: 10px">
+            <p id="p-low" class="priority-button">LOW</p>
+            <p id="p-medium" class="priority-button">MEDIUM</p>
+            <p id="p-high" class="priority-button">HIGH</p>
+          </div>
+          <div style="padding-left: 140px">
+            <p id="add-task">ADD TASK</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="add-project-window">
+      <div class="first-block">
+        <textarea
+          id="add-project-name"
+          style="border: none; outline: none; resize: none"
+          maxlength="30"
+          placeholder="Add a new project name"
+          name="add-project-name"
+          required
+        ></textarea>
+        <p
+          id="error-message"
+          style="color: #d10000; font-size: 0.8rem; display: none"
+        >
+          Project field is required!
+        </p>
+      </div>
+      <br />
+      <div class="add-projects-form-buttons">
+        <p class="add-project-form-new">Add</p>
+        <p class="add-project-form-cancel">Cancel</p>
+      </div>
+    </div>
+    <div id="taskDetailsForm" class="taskDetailsFormModal">
+      <div>
+        <p
+          class="tdf-close"
+          style="font-size: 1.5rem; cursor: pointer; text-align: end"
+        >
+          X
+        </p>
+      </div>
+      <div class="taskDetailsForm-details">
+        <h2 class="tdf-task-name">Task Name</h2>
+        <p class="tdf-project-name">Project Name</p>
+        <p class="tdf-priority">Priority: Low</p>
+        <p class="tdf-due-date">Due Date: December 12th, 2024</p>
+        <p class="tdf-detail">Details: details</p>
+      </div>
+    </div>
+    <div class="main">
+      <div class="sidebar">
+        <div class="side-menu">
+          <div>
+            <h1 style="font-size: 2rem"># ClearTasks</h1>
+          </div>
+          <div class="project-header">
+            <div class="project-titles">
+              <p id="home-button" class="project-main">Home</p>
+              <p id="home-number" class="project-number">0</p>
+            </div>
+            <div class="project-titles">
+              <p id="today-button" class="project-main">Today</p>
+              <p id="today-number" class="project-number">0</p>
+            </div>
+            <div class="project-titles">
+              <p id="week-button" class="project-main">Week</p>
+              <p id="week-number" class="project-number">0</p>
+            </div>
+            <div class="project-titles">
+              <p>Projects</p>
+            </div>
+            <div>
+              <div class="my-projects"></div>
+            </div>
+          </div>
+          <div class="add-project-button">
+            <img
+              id="add-project-button"
+              class="button"
+              src="ed951fc2d1bebe6d5a79.png"
+              alt="add-button"
+              width="50px"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="tasklist">
+        <div class="task-buttons">
+          <p class="task-new">New Task</p>
+          <p class="project-delete">Delete Project</p>
+        </div>
+        <div class="task-container"></div>
+      </div>
+    </div>
+  </body>
+</html>
