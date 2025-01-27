@@ -1,56 +1,82 @@
 import { formatTaskDate, tasksInWeek, tasksInDay } from "./date.js";
+import {
+  saveProjectsToLocalStorage,
+  getProjectsFromLocalStorage,
+} from "./local-storage.js";
 
 export default class Project {
   constructor(projectName) {
     this.projectName = projectName;
-    this.id = `project-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    this.id = `project-${Date.now()}-${Math.random()
+      .toString(36)
+      .substr(2, 9)}`;
     this.tasks = [];
   }
 }
+const DEMO_PROJECT_IDS = [
+  "demo-project-software",
+  "demo-project-language",
+  "demo-project-gym",
+];
 
-export const allProjects = [];
+const storedProjects = getProjectsFromLocalStorage();
 
+if (!storedProjects.some((project) => DEMO_PROJECT_IDS.includes(project.id))) {
+  const demoProjects = [
+    {
+      id: "demo-project-software",
+      projectName: "Software",
+      tasks: [
+        {
+          projectId: "demo-project-software",
+          taskId: "task001",
+          title: "Learn Javascript",
+          detail: "OOP",
+          dueDate: "2025-01-31",
+          priority: "high",
+          isDone: false,
+        },
+      ],
+    },
+    {
+      id: "demo-project-language",
+      projectName: "Language",
+      tasks: [
+        {
+          projectId: "demo-project-language",
+          taskId: "task002",
+          title: "Study English",
+          detail: "Read Essays.",
+          dueDate: "2025-02-15",
+          priority: "medium",
+          isDone: false,
+        },
+        {
+          projectId: "demo-project-language",
+          taskId: "task003",
+          title: "Study German",
+          detail: "Check the future tense.",
+          dueDate: "2025-01-30",
+          priority: "low",
+          isDone: true,
+        },
+      ],
+    },
+    {
+      id: "demo-project-gym",
+      projectName: "Gym",
+      tasks: [],
+    },
+  ];
 
-const project1 = new Project("Software");
-const project2 = new Project("Language");
-const project3 = new Project("Gym");
-
-allProjects.push(project1, project2, project3);
-
-
-allProjects[0].tasks.push({
-  projectId: allProjects[0].id,
-  taskId :"task001",
-  title: "Learn Javascript",
-  detail: "OOP",
-  dueDate: "2025-01-31",
-  priority: "high",
-  isDone: false,
-});
-
-allProjects[1].tasks.push({
-  projectId: allProjects[1].id,
-  title: "Study English",
-  taskId :"task002",
-  detail: "Read Essays.",
-  dueDate: "2025-02-15",
-  priority: "medium",
-  isDone: false,
-});
-
-allProjects[1].tasks.push({
-  projectId: allProjects[1].id,
-  taskId : "task003",
-  title: "Study German",
-  detail: "Check the future tense.",
-  dueDate: "2025-01-30",
-  priority: "low",
-  isDone: false,
-});
-
+  const updatedProjects = [...storedProjects, ...demoProjects];
+  saveProjectsToLocalStorage(updatedProjects);
+}
 
 export function getProjectById(projectId) {
-  return allProjects.find((project) => project.id === projectId);
+  const projects = getProjectsFromLocalStorage();
+
+  return projects.find((project) => project.id === projectId);
 }
 
 export function getProjectNameById(projectId) {
@@ -59,13 +85,15 @@ export function getProjectNameById(projectId) {
 }
 
 export function displayProjects() {
+  const projects = getProjectsFromLocalStorage();
+
   const projectContainer = document.querySelector(".my-projects");
   projectContainer.innerHTML = "";
 
-  allProjects.forEach((project) => {
+  projects.forEach((project) => {
     const projectBlock = document.createElement("div");
     projectBlock.className = "my-projects-block";
-    projectBlock.setAttribute("data-project-id", project.id); 
+    projectBlock.setAttribute("data-project-id", project.id);
 
     const projectName = document.createElement("p");
     projectName.textContent = `${project.projectName}`;
@@ -77,25 +105,30 @@ export function displayProjects() {
     const incompleteTasks = project.tasks.filter((task) => !task.isDone);
     taskNumber.textContent = incompleteTasks.length;
 
-    const allTasks = document.getElementById("home-number");
-    allTasks.innerHTML = allProjects.reduce((count, project) => {
+    const allTasksCount = projects.reduce((count, project) => {
       return count + project.tasks.filter((task) => !task.isDone).length;
     }, 0);
 
-    const weekTasks = document.getElementById("week-number");
-    weekTasks.innerHTML = allProjects.reduce((count, project) => {
-      const incompleteTasksInWeek = tasksInWeek(project.tasks).filter((task) => !task.isDone);
-      return count + incompleteTasksInWeek.length;  
+    const weekTasksCount = projects.reduce((count, project) => {
+      const incompleteTasksInWeek = tasksInWeek(project.tasks).filter(
+        (task) => !task.isDone
+      );
+      return count + incompleteTasksInWeek.length;
     }, 0);
 
-    const todayTasks = document.getElementById("today-number");
-    todayTasks.innerHTML = allProjects.reduce((count, project) => {
-      const incompleteTasksInDay = tasksInDay(project.tasks).filter((task) => !task.isDone);
-      return count + incompleteTasksInDay.length;  
+    const todayTasksCount = projects.reduce((count, project) => {
+      const incompleteTasksInDay = tasksInDay(project.tasks).filter(
+        (task) => !task.isDone
+      );
+      return count + incompleteTasksInDay.length;
     }, 0);
+
+    document.getElementById("home-number").innerHTML = allTasksCount;
+    document.getElementById("week-number").innerHTML = weekTasksCount;
+    document.getElementById("today-number").innerHTML = todayTasksCount;
 
     taskNumber.className = "project-number";
-    taskNumber.setAttribute("data-project-id", project.id); 
+    taskNumber.setAttribute("data-project-id", project.id);
 
     projectBlock.appendChild(projectName);
     projectBlock.appendChild(taskNumber);
@@ -107,7 +140,8 @@ export function displayProjects() {
 export function addProject(name) {
   if (!name) return;
 
+  const projects = getProjectsFromLocalStorage();
   const newProject = new Project(name);
-  allProjects.push(newProject);
+  projects.push(newProject);
+  saveProjectsToLocalStorage(projects);
 }
-
